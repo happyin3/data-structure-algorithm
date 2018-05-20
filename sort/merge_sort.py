@@ -66,9 +66,44 @@ def merge_sort(data):
 
     return data
 
+
+def merge_sort_recursion(data):
+    '''
+    归并排序，递归
+    :param data: <list> 待排序数列
+    :return: <list> 已排序数列
+    '''
+    def merge(left, right):
+        j, k = 0, 0
+        result = []
+
+        llen, rlen = len(left), len(right)
+        while j < llen and k < rlen:
+            if left[j] <= right[k]:
+                result.append(left[j])
+                j += 1
+            else:
+                result.append(right[k])
+                k += 1
+
+        result.extend(left[j:])
+        result.extend(right[k:])
+
+        return result
+
+    if len(data) <= 1:
+        return data
+
+    mid = len(data) / 2
+    left = merge_sort_recursion(data[:mid])
+    right = merge_sort_recursion(data[mid:])
+    return merge(left, right)
+
 if __name__ == '__main__':
     ori = range(1, 9)
     data = range(1, 9)
 
     random.shuffle(data)
     assert merge_sort(data) == ori
+    random.shuffle(data)
+    assert merge_sort_recursion(data) == ori
